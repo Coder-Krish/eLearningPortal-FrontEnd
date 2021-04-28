@@ -1,0 +1,297 @@
+
+ <div class="panel panel-default" [hidden]="!isRegisteredUsers">
+    <div class="panel-heading text-center">
+        <h1>Registered users</h1>
+    </div>
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light" >
+                <tr >
+                    <th (click)="sort('id')"># &nbsp;<i class="fa fa-sort"></i></th>
+                    <th (click)="sort('fullname')">Fullname &nbsp;<i class="fa fa-sort"></i></th>
+                    <th (click)="sort('email')">Email &nbsp;<i class="fa fa-sort"></i></th>
+                    <th (click)="sort('username')">Username &nbsp;<i class="fa fa-sort"></i></th>
+                    <th (click)="sort('program')">Program &nbsp;<i class="fa fa-sort"></i></th>
+                    <th (click)="sort('gender')">Gender &nbsp;<i class="fa fa-sort"></i></th>
+                    <th (click)="sort('address')">Address &nbsp;<i class="fa fa-sort"></i></th>
+                    <th style="white-space: nowrap;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of content | orderBy: key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                    <td>{{user.id}}</td>
+                    <td>{{user.fullname}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.courseDetail.programName}}</td>
+                    <td>{{user.gender}}</td>
+                    <td>{{user.address}}</td>
+                    <td style="white-space: nowrap;">
+                        <button (click)="updateUserClicked(user.id)" class="btn btn-primary" data-target="#userUpdateModal" data-toggle="modal"><i class="fa fa-edit"></i></button> |
+                        <button (click)="viewUser(user.id)" class="btn btn-success" data-target="#userModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table> 
+
+        <div>
+            <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+        </div>
+
+    </div> 
+       
+    </div>
+</div>
+
+<!-- Active Users Panel -->
+
+<div class="panel panel-default" [hidden]="!isActiveUsers">
+    <div class="panel-heading text-center">
+        <h1>Active Users</h1>
+    </div>
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th (click)="sort('id')"># &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('fullname')">Fullname &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('email')">Email &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('username')">Username &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('program')">Program &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('gender')">Gender &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('address')">Address &nbsp;<i class="fa fa-sort"></i></th>
+                        <th style="white-space: nowrap;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of content | orderBy: key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                        <td>{{user.id}}</td>
+                        <td>{{user.fullname}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.username}}</td>
+                       <td>{{user.courseDetail.programName}}</td>
+                        <td>{{user.gender}}</td>
+                        <td>{{user.address}}</td>
+                        <td style="white-space: nowrap;">
+                            <button  class="btn btn-danger"
+                            mwlConfirmationPopover
+                      [popoverTitle]="popoverTitle"
+                      [popoverMessage]="popoverMessage"
+                      placement="left"
+                      (confirm)="deleteActiveUser(user.id)"
+                      (cancel)="cancelClicked = true"
+                            ><i class="fa fa-trash"></i></button> |
+                            <button (click)="updateUserClicked(user.id)" class="btn btn-primary" data-target="#userUpdateModal" data-toggle="modal"><i class="fa fa-edit"></i></button> |
+                            <button (click)="viewUser(user.id)" class="btn btn-success" data-target="#userModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table> 
+
+            <div>
+                <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+            </div>
+
+    </div> 
+       
+    </div>
+</div>
+
+<!-- InActive Users Panel -->
+
+<div class="panel panel-default" [hidden]="!isInActiveUsers">
+    <div class="panel-heading text-center">
+        <h1>Deleted Or not activated users</h1>
+    </div>
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th (click)="sort('id')"># &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('fullname')">Fullname &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('email')">Email &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('username')">Username &nbsp;<i class="fa fa-sort"></i></th>
+                       <th (click)="sort('program')">Program &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('gender')">Gender &nbsp;<i class="fa fa-sort"></i></th>
+                        <th (click)="sort('address')">Address &nbsp;<i class="fa fa-sort"></i></th>
+                        <th style="white-space: nowrap;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of content | orderBy: key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                        <td>{{user.id}}</td>
+                        <td>{{user.fullname}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.username}}</td>
+                       <td>{{user.courseDetail.programName}}</td>
+                        <td>{{user.gender}}</td>
+                        <td>{{user.address}}</td>
+                        <td style="white-space: nowrap;">
+                            <button (click)="updateUserClicked(user.id)" class="btn btn-primary" data-target="#userUpdateModal" data-toggle="modal"><i class="fa fa-edit"></i></button> |
+                            <button (click)="viewUser(user.id)" class="btn btn-success" data-target="#userModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table> 
+
+            <div>
+                <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+            </div>
+
+    </div> 
+       
+    </div>
+</div>
+
+<!-- User Detail displaying Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="background-color: #CCCCFF;">
+        <div class="modal-header" style="background-color: #CCCCFF;">
+          <h5 class="modal-title" id="userModalLongTitle">User Detail</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td colspan="2" class="image-td"><img *ngIf="isretrievedProfileImage" class="profile-thumbnail" [src]="retrievedProfileImage" alt="logo">
+                    <img  *ngIf="!isretrievedProfileImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo"> <br>
+                    <br>{{ username }} <br>
+                    {{ email }}
+                </td>
+              </tr>
+              <br>
+              <tr>
+                <td class="detail-td">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User Id:&nbsp;&nbsp; {{ userId }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Full Name:&nbsp;&nbsp; {{ fullname }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone:&nbsp; &nbsp; {{ phone }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Program:&nbsp; &nbsp; {{ program }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Institution: &nbsp; &nbsp; {{ institution }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gender: &nbsp; &nbsp; {{ gender }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adress: &nbsp; &nbsp; {{ address }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Active Status: &nbsp; &nbsp; {{ active }} <br> <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email Verification Status: &nbsp; &nbsp; {{ isEnabled }} <br> <br>
+                </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Users Details updating modal start-->
+  <div class="modal fade" id="userUpdateModal" tabindex="-1" role="dialog" aria-labelledby="userUpdateModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h5 class="modal-title" id="userUpdateModalLongTitle">User Detail Update</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+            <table class="table table-borderless">
+                <tbody>
+                  <tr>
+                    <td colspan="2" class="image-td"><img *ngIf="isretrievedProfileImage" class="profile-thumbnail" [src]="retrievedProfileImage" alt="logo">
+                        <img  *ngIf="!isretrievedProfileImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo"> <br>
+                        <br>
+                        <button class="btn btn-danger" (click)="removeProfilePicture(profilePictureId)">Remove Profile</button>&nbsp;&nbsp;<button class="btn btn-success" (click)="changeProfilePicture(profilePictureId)">Change Profile</button>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+           
+            <form 
+            name="form"
+            (ngSubmit)="updateUser(userId)"
+            novalidate
+            >
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="inputUserId">User Id</label>
+                        <input type="text" class="form-control" id="inputUserId" [value]="userId" readonly>
+                     </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputActiveStatus">Active Status</label>
+                        <input type="text" class="form-control" id="inputActiveStatus" [value]="active" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputEmailVerified">Email Verified </label>
+                        <input type="text" class="form-control" id="inputEmailVerified" [value]="isEnabled" readonly>
+                    </div>
+
+                </div>
+
+                    <div class="form-group">
+                        <label for="inputFullname">Fullname</label>
+                        <input type="text" class="form-control" id="inputFullname" [(ngModel)]="userFullname" name="userFullname" placeholder="Fullname">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Email</label>
+                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email" [value]="email" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPhone">Phone</label>
+                            <input type="number" class="form-control" id="inputPhone" [(ngModel)]="userPhone" name="userPhone" placeholder="Phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputInstitution">Institution</label>
+                        <input type="text" class="form-control" id="inputInstitution" [(ngModel)]="userInstitution" name="userInstitution" placeholder="Institution">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputProgram">Program</label>
+                        <input type="text" class="form-control" id="inputProgram" [value]="program" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" [(ngModel)]="userAddress" name="userAddress" placeholder="Address">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress2">Gender</label>
+                        <select class="form-control" [(ngModel)]="userGender" name="userGender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-edit">&nbsp; &nbsp;Update</i></button>
+            </form>
+           
+        </div>
+            
+      </div>
+    </div>
+  </div>
+    <!--Users Details updating modal end-->

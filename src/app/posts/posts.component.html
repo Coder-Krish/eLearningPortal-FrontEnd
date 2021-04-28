@@ -1,0 +1,241 @@
+
+<!-- All Posts Panel -->
+ <div class="panel panel-default" [hidden]="!isAllPosts">
+    <div class="panel-heading text-center">
+        <h1>All Posts</h1>
+    </div>
+
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th (click)="sort('id')"># &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedBy')">Posted By &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedTime')">Posted At &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('content')">Content &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('fileType')">File Type &nbsp; <i class="fa fa-sort"></i></th>
+    
+                        <th style="white-space: nowrap;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let posts of content | orderBy : key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                        <td>{{ posts.id }}</td>
+                        <td>{{ posts.postedBy }}</td>
+                        <td>{{ posts.postedTime }}</td>
+                        <td>{{ posts.content }}</td>                      
+                        <td>{{ posts.fileType }}</td>
+                        <td style="white-space: nowrap;">
+                            
+                            <button (click)="viewPosts(posts.id)" class="btn btn-success" data-target="#postModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table> 
+            <div>
+                <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+            </div>
+    </div> 
+       
+    </div>
+</div>
+
+<!-- Active Posts Panel -->
+
+<div class="panel panel-default" [hidden]="!isActivePosts">
+    <div class="panel-heading text-center">
+        <h1>Active Posts</h1>
+    </div>
+
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th (click)="sort('id')"># &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedBy')">Posted By &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedTime')">Posted At &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('content')">Content &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('fileType')">File Type &nbsp; <i class="fa fa-sort"></i></th>
+    
+                        <th style="white-space: nowrap;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let posts of content | orderBy : key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                        <td>{{ posts.id }}</td>
+                        <td>{{ posts.postedBy }}</td>
+                        <td>{{ posts.postedTime }}</td>
+                        <td>{{ posts.content }}</td>
+                        
+                        <td>{{ posts.fileType }}</td>
+                        <td style="white-space: nowrap;">
+                            <button class="btn btn-danger"
+                            mwlConfirmationPopover
+                            [popoverTitle]="popoverTitle"
+                            [popoverMessage]="popoverMessage"
+                            placement="left"
+                            (confirm)="deleteActivePosts(posts.id)"
+                            (cancel)="cancelClicked = true"
+                            ><i class="fa fa-trash"></i></button> |
+                           
+                            <button (click)="viewPosts(posts.id)" class="btn btn-success" data-target="#postModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table> 
+            <div>
+                <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+            </div>
+    </div> 
+       
+    </div>
+</div>
+
+<!-- Deleted Posts Panel -->
+
+<div class="panel panel-default" [hidden]="!isInActivePosts">
+    <div class="panel-heading text-center">
+        <h1>Deleted Posts</h1>
+    </div>
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th (click)="sort('id')"># &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('postedBy')">Posted By &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('postedTime')">Posted At &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('content')">Content &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('fileType')">File Type &nbsp; <i class="fa fa-sort"></i></th>
+
+                    <th style="white-space: nowrap;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let posts of content | orderBy : key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                    <td>{{ posts.id }}</td>
+                    <td>{{ posts.postedBy }}</td>
+                    <td>{{ posts.postedTime }}</td>
+                    <td>{{ posts.content }}</td>
+                    
+                    <td>{{ posts.fileType }}</td>
+                    <td style="white-space: nowrap;">
+                       
+                        <button (click)="viewPosts(posts.id)" class="btn btn-success" data-target="#postModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table> 
+        <div>
+            <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+        </div>
+    </div> 
+       
+    </div>
+</div>
+
+
+<!-- Post displaying Modal -->
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="postModalLongTitle">Post</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="image-td"><img *ngIf="isretrievedProfileImage" class="profile-thumbnail" [src]="retrievedProfileImage" alt="logo">
+                    <img *ngIf="!isretrievedProfileImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                </td>
+                <td class="intro-td">{{ postedBy }}<br> {{ postedTime }}</td>
+                <td class="options-td">
+                  <div class="dropdown-show">
+                    <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </a>
+                    
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="#">Share</a>
+                    </div>
+                    </div>
+                  
+                 </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>{{ postedData }} <br><br>
+                   <img class="content-image" [src]="retrievedFile" alt="">
+               </td>
+                <td></td>
+               </tr>
+            </tbody>
+          </table>
+          <hr>
+          <table class="table">
+              <thead>Comments</thead>
+            
+                <tbody *ngIf="isCommentPresent">
+                    <tr *ngFor= "let comments of thisIsComment | paginate: { id: 'comments_pagination',itemsPerPage: 4,currentPage: page,totalItems: totalRecords }">
+                      <td class="image-td"><img *ngIf="isCommenterProfileImagePresent" class="profile-thumbnail" [src]="comments.commenterImage" alt="profile Image">
+                          <img *ngIf="!isCommenterProfileImagePresent" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                      </td>
+                      <td class="intro-td">{{ comments.username }}<br> {{ comments.commentedAt }} <br> <br>
+                    {{ comments.comment }}</td>
+                      <td class="options-td">
+                        <div class="dropdown-show">
+                          <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h"></i>
+                          </a>
+                          
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" (click)="deleteComment(comments.id)">Delete</a>
+                            <a class="dropdown-item" href="#">Share</a>
+                          </div>
+                          </div>
+                        
+                       </td>
+                       
+                    </tr>
+                    
+                
+                  </tbody>
+                  <tbody *ngIf="!isCommentPresent"><tr><td>No Comments</td></tr></tbody>
+
+          </table>
+
+          <div>
+            <pagination-controls  id="comments_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>

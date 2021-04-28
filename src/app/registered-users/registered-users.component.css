@@ -1,0 +1,32 @@
+.profile-thumbnail{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+   
+}
+.content-image{
+    height: 200px;
+    
+}
+.image-td{
+    display: inline-block;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    background-color: #6495ED;
+    border-radius: 10px;
+    color: white;
+    
+}
+
+.detail-td{
+    /* text-align: left; */
+    margin-left: 50px;
+    background-color: #9FE2BF;
+    border-radius: 10px;
+}
+
+
+
+

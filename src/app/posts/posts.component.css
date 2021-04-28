@@ -1,0 +1,21 @@
+.profile-thumbnail{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+   
+}
+.content-image{
+    height: 200px;
+    
+}
+.image-td{
+    width: 50px;
+    text-align: right;
+}
+.intro-td{
+    width: 50px;
+}
+           
+.options-td{
+    width: 20px;
+}

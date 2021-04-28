@@ -1,0 +1,281 @@
+<!-- <div id="app">
+  <nav class="navbar navbar-expand navbar-dark bg-primary">
+    <a href="#" class="navbar-brand">NightB4Exam</a>
+    <ul class="navbar-nav mr-auto" routerLinkActive="active">
+      <li class="nav-item">
+        <a href="/home" class="nav-link" routerLink="home">Home </a>
+      </li>
+      <li class="nav-item" *ngIf="showAdminBoard">
+        <a href="/admin" class="nav-link" routerLink="admin">Admin Board</a>
+      </li>
+
+      <li class="nav-item" *ngIf="showAdminBoard">
+        <a href="/notes" class="nav-link" routerLink="notes">Notes</a>
+      </li>
+
+      <li class="nav-item" *ngIf="showModeratorBoard">
+        <a href="/mod" class="nav-link" routerLink="mod">Moderator Board</a>
+      </li>
+      <li class="nav-item">
+        <a href="/user" class="nav-link" *ngIf="isLoggedIn" routerLink="user">User</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+      <li class="nav-item">
+        <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a href="/login" class="nav-link" routerLink="login">Login</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+      <li class="nav-item">
+        <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+      </li>
+      <li class="nav-item">
+        <a href class="nav-link" (click)="logout()">LogOut</a>
+      </li>
+    </ul>
+  </nav> -->
+
+
+
+<!---->
+
+<!--New Dashboard for admin starts-->
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <div id="sticky-sidebar" *ngIf="showAdminBoard">
+    <div class="sticky-top">
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="/admin">
+          <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fab fa-studiovinari"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">Night<sup>B4</sup><sub>Exam</sub></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/admin">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+
+        <!-- Nav Item - Users Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+            aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Users</span>
+          </a>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Users:</h6>
+              <a class="collapse-item" routerLink="/users1/registered-users">Registered Users</a>
+              <a class="collapse-item" routerLink="/users2/active-users">Active Users</a>
+              <a class="collapse-item" routerLink="/users3/inactive-users">Inactive Users</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Posts Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePosts"
+            aria-expanded="true" aria-controls="collapsePosts">
+            <i class="fas fa-fw fa-clipboard"></i>
+            <span>Posts</span>
+          </a>
+          <div id="collapsePosts" class="collapse" aria-labelledby="headingPosts" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Posts:</h6>
+              <a class="collapse-item" routerLink="/posts1/all-posts">All Posts</a>
+              <a class="collapse-item" routerLink="/posts2/active-posts">Active Posts</a>
+              <a class="collapse-item" routerLink="/posts3/inactive-posts">Inactive Posts</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDiscussions"
+            aria-expanded="true" aria-controls="collapsediscussions">
+            <i class="fas fa-comments"></i>
+            <span>Discussions</span>
+          </a>
+          <div id="collapseDiscussions" class="collapse" aria-labelledby="headingdiscussions"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Discussions</h6>
+              <a class="collapse-item" routerLink="/discussions1/all-discussions">All Discussions</a>
+              <a class="collapse-item" routerLink="/discussions2/active-discussions">Active Discussions</a>
+              <a class="collapse-item" routerLink="/discussions3/inactive-discussions">Inactive Discussions</a>
+
+            </div>
+          </div>
+        </li>
+
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+
+        <!-- Nav Item - Programs and subjects -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/programs-and-subjects/programs">
+            <i class="fas fa-book"></i>
+            <span>Programs and Subjects</span>
+          </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Notes -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/notes">
+            <i class="fas fa-book-open"></i>
+            <span>Notes</span>
+          </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+
+      </ul>
+    </div>
+  </div>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+      <!-- Topbar -->
+
+      <nav class="navbar navbar-expand navbar-light bg-primary topbar mb-4 static-top shadow" *ngIf="showAdminBoard">
+
+
+
+
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+
+
+
+          <div class="topbar-divider d-none d-sm-block"></div>
+
+          <!-- Nav Item - User Information -->
+          <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <span class="mr-2 d-none d-lg-inline text-white-600 medium">{{username}}</span>
+              <img *ngIf="!isProfileImagePresent" class="img-profile rounded-circle" src="../../assets/avatar.jpg">
+              <img *ngIf="isProfileImagePresent" class="img-profile rounded-circle" [src]="profilePic">
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+              <a class="dropdown-item" routerLink="/profile">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
+              </a>
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                Change Password
+              </a>
+
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" (click)="logout()" style="cursor: pointer;">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+
+        </ul>
+
+      </nav>
+
+      <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+
+
+        <router-outlet></router-outlet>
+
+
+
+      </div>
+      <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="../assets/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="../assets/vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="../assets/js/demo/chart-area-demo.js"></script>
+  <script src="../assets/js/demo/chart-pie-demo.js"></script>
+
+  <!--New Dashboard for admin ends-->
+
+
+
+  <!---->
+
+
+  <!-- <router-outlet></router-outlet> -->
+
+  <!-- Footer -->
+  <!-- <footer class="page-footer font-small"> -->
+
+  <!-- Copyright -->
+  <!-- <div class="footer-copyright text-center py-3 bg-primary">&copy; 2020
+    <a href="http://bogatikrishna.com.np" style="color: aliceblue;"> Krishna Bogati</a>
+  </div> -->
+  <!-- Copyright -->
+
+  <!-- </footer> -->
+  <!-- Footer -->
+  <!-- </div> -->

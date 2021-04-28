@@ -1,0 +1,243 @@
+<!-- All Discussions Panel -->
+<div class="panel panel-default" [hidden]="!isAllDiscussions">
+    <div class="panel-heading text-center">
+        <h1>All Discussions</h1>
+    </div>
+
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th (click)="sort('id')"># &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedBy')">Posted By &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedTime')">Posted At &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('content')">Content &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('fileType')">File Type &nbsp; <i class="fa fa-sort"></i></th>
+    
+                        <th style="white-space: nowrap;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let discussions of content | orderBy : key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                        <td>{{ discussions.id }}</td>
+                        <td>{{ discussions.postedBy }}</td>
+                        <td>{{ discussions.postedAt }}</td>
+                        <td>{{ discussions.content }}</td>                      
+                        <td>{{ discussions.fileType }}</td>
+                        <td style="white-space: nowrap;">
+                        
+                            <button (click)="viewDiscussions(discussions.id)" class="btn btn-success" data-target="#discussionsModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table> 
+            <div>
+                <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+            </div>
+    </div> 
+       
+    </div>
+</div>
+
+<!--End of all discussions panel-->
+
+<!-- Active Discussions Panel starts -->
+
+<div class="panel panel-default" [hidden]="!isActiveDiscussions">
+    <div class="panel-heading text-center">
+        <h1>Active Discussions</h1>
+    </div>
+
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th (click)="sort('id')"># &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedBy')">Posted By &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('postedTime')">Posted At &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('content')">Content &nbsp; <i class="fa fa-sort"></i></th>
+                        <th (click)="sort('fileType')">File Type &nbsp; <i class="fa fa-sort"></i></th>
+    
+                        <th style="white-space: nowrap;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let activeDiscussions of content | orderBy : key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                        <td>{{ activeDiscussions.id }}</td>
+                        <td>{{ activeDiscussions.postedBy }}</td>
+                        <td>{{ activeDiscussions.postedAt }}</td>
+                        <td>{{ activeDiscussions.content }}</td>
+                        <td>{{ activeDiscussions.fileType }}</td>
+                        <td style="white-space: nowrap;">
+                            <button class="btn btn-danger"
+                            mwlConfirmationPopover
+                            [popoverTitle]="popoverTitle"
+                            [popoverMessage]="popoverMessage"
+                            placement="left"
+                            (confirm)="deleteDiscussions(activeDiscussions.id)"
+                            (cancel)="cancelClicked = true"
+                            ><i class="fa fa-trash"></i></button> |
+                           
+                            <button (click)="viewDiscussions(activeDiscussions.id)" class="btn btn-success" data-target="#discussionsModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table> 
+            <div>
+                <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+            </div>
+    </div> 
+       
+    </div>
+</div>
+<!--End of active Discussions panel-->
+
+<!-- Deleted discussions Panel start -->
+
+<div class="panel panel-default" [hidden]="!isInActiveDiscussions">
+    <div class="panel-heading text-center">
+        <h1>Deleted Discussions</h1>
+    </div>
+
+    <nav class="navbar" style="float: right;">
+        <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+       </nav>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th (click)="sort('id')"># &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('postedBy')">Posted By &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('postedTime')">Posted At &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('content')">Content &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('fileType')">File Type &nbsp; <i class="fa fa-sort"></i></th>
+
+                    <th style="white-space: nowrap;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let inActiveDiscussions of content | orderBy : key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                    <td>{{ inActiveDiscussions.id }}</td>
+                    <td>{{ inActiveDiscussions.postedBy }}</td>
+                    <td>{{ inActiveDiscussions.postedAt }}</td>
+                    <td>{{ inActiveDiscussions.content }}</td>
+                    
+                    <td>{{ inActiveDiscussions.fileType }}</td>
+                    <td style="white-space: nowrap;">
+                       
+                        <button (click)="viewDiscussions(inActiveDiscussions.id)" class="btn btn-success" data-target="#discussionsModal" data-toggle="modal"><i class="fa fa-eye"></i></button>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table> 
+        <div>
+            <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+        </div>
+    </div> 
+       
+    </div>
+</div>
+<!--End of Deleted discussions panel-->
+
+<!-- Discussions displaying Modal -->
+<div class="modal fade" id="discussionsModal" tabindex="-1" role="dialog" aria-labelledby="discussionsModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="discussionsModalLongTitle">Discussion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="image-td"><img *ngIf="isretrievedProfileImage" class="profile-thumbnail" [src]="retrievedProfileImage" alt="logo">
+                    <img *ngIf="!isretrievedProfileImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                </td>
+                <td class="intro-td">{{ postedBy }}<br> {{ postedTime }}</td>
+                <td class="options-td">
+                  <div class="dropdown-show">
+                    <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </a>
+                    
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="#">Share</a>
+                    </div>
+                    </div>
+                  
+                 </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>{{ postedData }} <br><br>
+                   <img class="content-image" [src]="retrievedFile" alt="">
+               </td>
+                <td></td>
+               </tr>
+            </tbody>
+          </table>
+          <hr>
+          <table class="table">
+              <thead>Comments</thead>
+            
+                <tbody *ngIf="isCommentPresent">
+                    <tr *ngFor= "let comments of thisIsComment | paginate: { id: 'comments_pagination',itemsPerPage: 4,currentPage: page,totalItems: totalRecords }">
+                      <td class="image-td"><img *ngIf="isCommenterProfileImagePresent" class="profile-thumbnail" [src]="comments.commenterImage" alt="profile Image">
+                          <img *ngIf="!isCommenterProfileImagePresent" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                      </td>
+                      <td class="intro-td">{{ comments.username }}<br> {{ comments.repliedAt }} <br> <br>
+                    {{ comments.reply }}</td>
+                      <td class="options-td">
+                        <div class="dropdown-show">
+                          <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h"></i>
+                          </a>
+                          
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" (click)="deleteReply(comments.id)">Delete</a>
+                            <a class="dropdown-item" href="#">Share</a>
+                          </div>
+                          </div>
+                        
+                       </td>
+                       
+                    </tr>
+                    
+                
+                  </tbody>
+                  <tbody *ngIf="!isCommentPresent"><tr><td>No Comments</td></tr></tbody>
+
+          </table>
+
+          <div>
+            <pagination-controls  id="comments_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End of Discussions Display modal-->

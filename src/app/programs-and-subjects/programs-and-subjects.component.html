@@ -1,0 +1,341 @@
+<!-- All Posts Panel -->
+<div class="panel panel-default" [hidden]="!isCourses">
+    <div class="panel-heading text-center">
+        <h1>Courses We Provide</h1>
+    </div>
+
+    <!-- Button trigger add program modal  -->
+<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#addProgramModalCenter" >
+    <i class="fa fa-plus">&nbsp; Add New Program</i>
+  </button>
+
+      <!-- Button trigger add subject modal -->
+<button type="button"  class="btn btn-success" data-toggle="modal" data-target="#addSubjectModalCenter" style="margin-left: 10px;" >
+    <i class="fa fa-plus">&nbsp; Add New Subject</i>
+  </button>
+  <br><br>
+
+
+<!-- Modal to add program  -->
+<div class="modal fade" id="addProgramModalCenter" tabindex="-1" role="dialog" aria-labelledby="addProgramModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProgramModalLongTitle"><strong>Add New Program</strong></h5>
+          <button type="button" (click)="closeDialog()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        
+          <form
+          name="form"
+          (ngSubmit)="onSubmit()"
+          novalidate
+        >
+  
+        <div class="form-group">
+          <label for="programs">Write Program's Name</label>
+         <input type="text" class="form-control" [(ngModel)]="programName" name="programName" id="program"  required/>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" (click)="closeDialog()" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i></button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-plus">&nbsp; &nbsp;Save</i></button>
+        </div>
+        
+      </form>
+  
+  
+  
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- End of Modal to add program -->
+
+  
+<!-- Modal to add subject  -->
+<div class="modal fade" id="addSubjectModalCenter" tabindex="-1" role="dialog" aria-labelledby="addSubjectModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addSubejctModalLongTitle"><strong>Add New Subject</strong></h5>
+          <button type="button" (click)="closeDialog()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        
+          <form
+          name="subjectform"
+          (ngSubmit)="addSubject()"
+          novalidate
+        >
+  
+        <div class="form-group">
+            <label for="programs">Program</label>
+            <select class="form-control" (change)="selectChangeProgramHandler($event)" required>
+                <option value="">--Select Program--</option>
+                <option *ngFor="let program of programs" value="{{program.id}}">{{ program.programName }}</option>
+            </select>
+          </div>
+    
+          <div class="form-group">
+            <label for="semesters">Semester</label>
+            <select class="form-control" (change)="selectChangeSemesterHandler($event)" required>
+                <option value="">--Select Semester--</option>
+                <option value="1">First Semester</option>
+                <option value="2">Second Semester</option>
+                <option value="3">Third Semester</option>
+                <option value="4">Fourth Semester</option>
+                <option value="5">Fifth Semester</option>
+                <option value="6">Sixth Semester</option>
+                <option value="7">Seventh Semester</option>
+                <option value="8">Eighth Semester</option>
+            </select>
+          </div>
+    
+    
+          <div class="form-group">
+            <label for="subjects">Subject Name</label>
+            <input type="text" class="form-control" name="subjectName" [(ngModel)]="subjectform.subjectName"  id="subject" required/>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" (click)="closeDialog()" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i></button>
+            <button type="submit" class="btn btn-success" ><i class="fa fa-plus">&nbsp; &nbsp;Save</i></button>
+          </div>
+  
+        
+      </form>
+  
+  
+  
+       </div>
+
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- End of Modal to add subject -->
+
+<!--Viewing programs-->
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-borderless table-hover table-light">
+
+                <tbody >
+                    <tr *ngFor="let program of programs">
+                        <td>></td>
+                        <a href="#" (click)="openDialog(program.programName, program.id)" data-toggle="modal" data-target="#viewSubjectModalCenter" style="text-decoration: none; color: black;  "> <td>   {{program.programName}}  </td></a>
+                        <td style="white-space: nowrap;">
+                          
+                          <button  class="btn btn-danger" 
+                      mwlConfirmationPopover
+                      [popoverTitle]="popoverTitle"
+                      [popoverMessage]="popoverMessage"
+                      placement="left"
+                      (confirm)="deleteProgram(program.id)"
+                      (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button> &nbsp;
+
+                        
+                        <button (click)="updateProgramClicked(program.id)" class="btn btn-primary" data-toggle="modal" data-target="#updateProgramModal"><i class="fa fa-edit"></i></button> 
+                      </td>
+
+                    </tr>
+                    
+                </tbody>
+            </table> 
+            
+    </div> 
+       
+    </div>
+    <!--viewing programs end-->
+
+
+
+<!-- Modal to view subject by program wise  -->
+<div class="modal fade" id="viewSubjectModalCenter" tabindex="-1" role="dialog" aria-labelledby="viewSubjectModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewSubjectModalCenterLongTitle"><strong>Subjects</strong></h5>
+          <button type="button" (click)="closeDialog()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <label >Program: &nbsp; &nbsp;{{ viewingProgram }}</label>
+        
+          <form
+          name="form"
+         
+          novalidate
+        >
+          <div class="form-group">
+            <label for="semesters">Semester</label>
+            <select class="form-control" (change)="selectChangeSemesterHandler($event)" required>
+                <option value="">--Select Semester--</option>
+                <option value="1">First Semester</option>
+                <option value="2">Second Semester</option>
+                <option value="3">Third Semester</option>
+                <option value="4">Fourth Semester</option>
+                <option value="5">Fifth Semester</option>
+                <option value="6">Sixth Semester</option>
+                <option value="7">Seventh Semester</option>
+                <option value="8">Eighth Semester</option>
+            </select>
+          </div> 
+      </form>
+
+  
+      <div class="table-responsive">
+        <table class="table table-borderless table-hover table-light">
+
+            <tbody >
+                <tr *ngFor="let subject of subjects">
+                    <td>></td>
+                    <td>   {{subject.subjectsName}}  </td>
+                    <td style="white-space: nowrap;">
+                      <button  class="btn btn-danger" 
+                      mwlConfirmationPopover
+                      [popoverTitle]="popoverTitle"
+                      [popoverMessage]="popoverMessage"
+                      placement="left"
+                      (confirm)="deleteSubject(subject.id)"
+                      (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button> &nbsp;
+
+                        
+                        <button (click)="updateSubjectClicked(subject.id)" class="btn btn-primary" data-toggle="modal" data-target="#updateSubjectModal"><i class="fa fa-edit"></i></button> 
+                     
+
+                    </td>
+                    
+                </tr>
+                
+            </tbody>
+        </table> 
+        
+</div> 
+  
+  
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- End of Modal to view subject by program wise -->
+
+  <!--Update Program Modal starts-->
+
+  <div class="modal fade" id="updateProgramModal" tabindex="-1" role="dialog" aria-labelledby="updateProgramModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProgramModalLongTitle"><strong>Update Program</strong></h5>
+          <button type="button" (click)="closeDialog()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        
+          <form
+          name="form"
+          (ngSubmit)="updateProgram(updatingProgramId)"
+          novalidate
+        >
+  
+        <div class="form-group">
+          <label for="programUpdateClicked">Program Name</label>
+         <input type="text" class="form-control" [(ngModel)]="programUpdateClicked" name="updateProgramName" id="program" required/>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" (click)="closeDialog()" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i></button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-edit">&nbsp; &nbsp;Update</i></button>
+        </div>
+        
+      </form>
+
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+  <!--Update Program Modal End-->
+
+
+  <!-- Modal to update subject  -->
+<div class="modal fade" id="updateSubjectModal" tabindex="-1" role="dialog" aria-labelledby="updateSubjectModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateSubejctModalLongTitle"><strong>Update Subject Detail</strong></h5>
+        <button type="button" (click)="closeDialog()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+        <form
+        name="subjectform"
+        (ngSubmit)="updateSubject(subject)"
+        novalidate
+      >
+
+      <div class="form-group">
+          <label for="programs">Program</label>
+          <input type="text" class="form-control"  [(ngModel)]="programNameFromsubjectDetail" name="program" id="program" readonly />
+        </div>
+  
+        <div class="form-group">
+          <label for="semesters">Semester</label>
+          <select class="form-control" [(ngModel)]="updateSemesterOfSubject" name="semester" (change)="selectChangeSemesterHandler($event)" required>
+              <option value="">--Select Semester--</option>
+              <option value="1">First Semester</option>
+              <option value="2">Second Semester</option>
+              <option value="3">Third Semester</option>
+              <option value="4">Fourth Semester</option>
+              <option value="5">Fifth Semester</option>
+              <option value="6">Sixth Semester</option>
+              <option value="7">Seventh Semester</option>
+              <option value="8">Eighth Semester</option>
+          </select>
+        </div>
+  
+  
+        <div class="form-group">
+          <label for="subjects">Subject Name</label>
+          <input type="text" class="form-control" name="subjectName" [(ngModel)]="updatesubjectName"  id="subject" required/>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" (click)="closeDialog()" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i></button>
+          <button type="submit" class="btn btn-success" ><i class="fa fa-edit">&nbsp; &nbsp;update</i></button>
+        </div>
+
+      
+    </form>
+
+
+
+     </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- End of Modal to update subject -->
+
+
+</div>

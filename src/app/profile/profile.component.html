@@ -1,0 +1,306 @@
+<div class="container" id="profile" *ngIf="currentUser; else loggedOut" >
+    <header class="jumbotron" style="text-align: center;">
+
+
+    
+      <img *ngIf="retrievedImage" class="images cursor" [src]="retrievedImage" alt="Avatar" data-toggle="modal" data-target="#profileImageModal" />
+  
+      
+      <!-- <div id="imgModal" class="image-modal" [hidden]="!popup">
+        <span class="close cursor" (click)="closeImage()">&times;</span>
+        <img class="popped-image" [src]="retrievedImage" alt="Avatar"/>
+        </div> -->
+  
+
+
+
+
+ <!--Profile Image displaying Modal -->
+ <div class="modal fade image-modal" id="profileImageModal" tabindex="-1" role="dialog" aria-labelledby="profileImageModalLongTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header image-modal-header">
+        <!-- <h5 class="modal-title" id="profileImageModalLongTitle">Profile Avatar</h5> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mb-0 p-0 image-modal-body">
+        
+        <img class="img-fluid" style="height: 31rem; width: 35rem; margin: 2rem;"  [src]="retrievedImage" alt="Avatar"/>
+     
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--Profile image modal section ends-->
+
+
+
+
+
+
+
+
+
+      <img  *ngIf="!retrievedImage" class="images" src="../assets/avatar.jpg" alt="Avatar" style="height: 60px; width: 60px; border-radius:50% ;"/>
+      <h3>
+        <strong>{{ currentUser.fullname }}</strong> <br> @{{ currentUser.username }}
+      </h3>
+      <p>{{ followerCount }} &nbsp;&nbsp;&nbsp;&nbsp; {{ followingCount }}</p>
+   
+      <p>{{ postsCount }} &nbsp;&nbsp;&nbsp;&nbsp; {{ discussionsCount }}</p>
+     
+    </header>
+    <!-- Nav bar starts -->
+    
+      
+    
+     <nav class="navbar bg-light">
+      <ul class="nav nav-pills">
+       <li class="nav-item" >
+        <a class="nav-link active" data-toggle="pill" (click)="postsClicked()">{{ postsCount }}</a>
+      </li>
+       <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" (click)="discussionsClicked()" >{{ discussionsCount }}</a>
+      </li>
+       <li class="nav-item">
+      <a class="nav-link" data-toggle="pill"  (click)="aboutClicked()">About</a>
+        </li>
+         </ul>
+      
+        </nav>
+
+  
+    <!-- navbar ends -->
+
+
+
+    <!-- Posts Section starts -->
+    <div *ngIf="isPostsClicked" class="col-md-6 col-centered custom">
+        <div *ngFor="let post of myPosts" class="card bg-light mb-3" style="max-width: 100%; box-shadow: 5rem; border-radius: 0.2rem;">
+        
+          <table class="table table-borderless">
+            <tbody >
+              
+              
+              <tr>
+                <td class="image-td"><img *ngIf="retrievedImage" class="profile-thumbnail" [src]="retrievedImage" alt="logo">
+                    <img *ngIf="!retrievedImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                </td><a href="#" (click)="viewPostInModal(post.id)" data-toggle="modal" data-target="#postModal" style="text-decoration: none; color: black; cursor: pointer;">
+                <td class="intro-td">{{ post.postedBy }}<br> {{ post.postedTime }} <br> <br>
+                  {{ post.content }} <br><br>
+                  <div class="card-body">
+                   <img *ngIf="isContentImageAvailable" class="content-image" [src]="post.contentImage" alt="{{ post.fileName }}">
+                  </div>
+                   <!-- </div>   -->
+                
+                </td>
+              </a>
+                <td class="options-td">
+                  <div class="dropdown-show">
+                    <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </a>
+                    
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="#">Share</a>
+                    </div>
+                    </div>
+                  
+                 </td>
+                
+              </tr>
+            
+             
+              
+            </tbody>
+          </table>
+
+        </div> <br><br>
+        </div>
+
+    <!-- posts section ends -->
+
+        <!-- Discussions Section starts -->
+        <div *ngIf="isDiscussionsClicked" class="col-md-6 col-centered custom">
+          <div *ngFor="let discussion of myDiscussions" class="card bg-light mb-3" style="max-width:100%; border-radius: 0.2rem;">
+          
+          <table class="table table-borderless">
+            <tbody >
+              
+              
+              <tr>
+                <td class="image-td"><img *ngIf="retrievedImage" class="profile-thumbnail" [src]="retrievedImage" alt="logo">
+                    <img *ngIf="!retrievedImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                </td><a href="https://www.google.com" style="text-decoration: none; color: black; cursor: pointer;">
+                <td class="intro-td">{{ discussion.postedBy }}<br> {{ discussion.postedAt }} <br> <br>
+                  {{ discussion.content }} <br><br>
+    
+                 
+                   <img *ngIf="isDiscussionImageAvailable" class="content-image" [src]="discussion.discussionImage" alt="{{ discussion.fileName }}">
+                  
+                   <!-- </div>   -->
+                
+                </td>
+              </a>
+                <td class="options-td">
+                  <div class="dropdown-show">
+                    <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </a>
+                    
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="#">Share</a>
+                    </div>
+                    </div>
+                  
+                 </td>
+              </tr>
+              
+            
+             
+              
+            </tbody>
+          </table>
+
+         
+        </div><br><br>
+        </div>
+
+    <!-- Discussions section ends -->
+
+
+
+    <!-- Post displaying Modal -->
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postModalLongTitle">Post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="image-td"><img *ngIf="isretrievedProfileImage" class="profile-thumbnail" [src]="retrievedProfileImage" alt="logo">
+                  <img *ngIf="!isretrievedProfileImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+              </td>
+              <td class="intro-td">{{ postedByInModal }}<br> {{ postedTimeInModal }}</td>
+              <td class="options-td">
+                <div class="dropdown-show">
+                  <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </a>
+                  
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                    <a class="dropdown-item" href="#">Edit</a>
+                    <a class="dropdown-item" href="#">Delete</a>
+                    <a class="dropdown-item" href="#">Share</a>
+                  </div>
+                  </div>
+                
+               </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>{{ postedDataInModal }} <br><br>
+                 <img *ngIf="isContentImagePresent" class="content-image" [src]="retrievedFile" alt="">
+             </td>
+              <td></td>
+             </tr>
+          </tbody>
+        </table>
+        <hr>
+        <table class="table">
+            <thead>Comments</thead>
+          
+              <tbody *ngIf="isCommentPresent">
+                  <tr *ngFor= "let comments of thisIsComment | paginate: { id: 'comments_pagination',itemsPerPage: 4,currentPage: page,totalItems: totalRecords }">
+                    <td class="image-td"><img *ngIf="isCommenterProfileImagePresent" class="profile-thumbnail" [src]="comments.commenterImage" alt="profile Image">
+                        <img *ngIf="!isCommenterProfileImagePresent" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                    </td>
+                    <td class="intro-td">{{ comments.username }}<br> {{ comments.commentedAt }} <br> <br>
+                  {{ comments.comment }}</td>
+                    <td class="options-td">
+                      <div class="dropdown-show">
+                        <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-ellipsis-h"></i>
+                        </a>
+                        
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                          <a class="dropdown-item" href="#">Edit</a>
+                          <a class="dropdown-item" href="#">Delete</a>
+                          <a class="dropdown-item" href="#">Share</a>
+                        </div>
+                        </div>
+                      
+                     </td>
+                     
+                  </tr>
+                  
+              
+                </tbody>
+                <tbody *ngIf="!isCommentPresent"><tr><td>No Comments</td></tr></tbody>
+
+        </table>
+
+        <div>
+          <pagination-controls  id="comments_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+      </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal section ends-->
+
+    
+    <!-- About section -->
+    <div class="about" id="about-section" *ngIf="isAboutClicked">
+    <p>
+      <strong>Email:</strong>
+      {{ currentUser.email }}
+    </p>
+    <p>
+      <strong>Institution:</strong>
+      {{ currentUser.institution }}
+    </p>
+    <p>
+      <strong>Program:</strong>
+      {{ currentUser.program.programName }}
+    </p>
+    <p>
+      <strong>Address:</strong>
+      {{ currentUser.address }}
+    </p>
+    <p>
+      <strong>Gender:</strong>
+      {{ currentUser.gender }}
+    </p>
+    <p>
+      <strong>Phone:</strong>
+      {{ currentUser.phone }}
+    </p>
+
+    <strong>Roles:</strong>
+    <ul>
+      <li *ngFor="let role of currentUser.roles">
+        {{ role }}
+      </li>
+    </ul>
+  </div>
+  </div>
+  
+  <ng-template #loggedOut>
+    Please login.
+  </ng-template>
+

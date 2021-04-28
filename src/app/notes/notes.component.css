@@ -1,0 +1,42 @@
+ 
+  .close:hover,
+  .close:focus {
+    color: #f80c0c;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .cursor {
+    cursor: pointer;
+  }
+.modal-title{
+  font-size: medium;
+}
+
+  .pdf-modal{
+  display: none;
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.6);
+}
+/* pdf-viewer{
+  position: relative;
+background-color: white;
+border-style: double;
+border-radius: 5px;
+border-color: #4a2bf8;
+top:0;
+margin-left: 17%;
+height: 700px;
+width: 900px;
+padding: 10px;
+} */
+
+.custom-modal-dialog{
+  max-width: 900px;
+}

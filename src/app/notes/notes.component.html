@@ -1,0 +1,190 @@
+<!-- All Posts Panel -->
+<div class="panel panel-default" [hidden]="!isAllNotes">
+    <div class="panel-heading text-center">
+        <h1>All Notes</h1>
+    </div>
+    
+
+
+<!-- This is modal -->
+<!-- Button trigger modal -->
+<button type="button" (click)="openDialog()" class="btn btn-primary" data-toggle="modal" data-target="#addNoteModalCenter" >
+  <i class="fa fa-plus">&nbsp; Add New Notes</i>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addNoteModalCenter" tabindex="-1" role="dialog" aria-labelledby="addNoteModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addNoteModalLongTitle"><strong>Add New Note</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+        <form
+        name="form"
+       
+        novalidate
+      >
+
+      <div class="form-group">
+        <label for="programs">Program</label>
+        <select class="form-control" (change)="selectChangeProgramHandler($event)" required>
+            <option value="">--Select Program--</option>
+            <option *ngFor="let program of registeredPrograms" value="{{program.id}}">{{ program.programName }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="semesters">Semester</label>
+        <select class="form-control" (change)="selectChangeSemesterHandler($event)" required>
+            <option value="">--Select Semester--</option>
+            <option value="1">First Semester</option>
+            <option value="2">Second Semester</option>
+            <option value="3">Third Semester</option>
+            <option value="4">Fourth Semester</option>
+            <option value="5">Fifth Semester</option>
+            <option value="6">Sixth Semester</option>
+            <option value="7">Seventh Semester</option>
+            <option value="8">Eighth Semester</option>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+        <label for="subjects">Subject</label>
+        <select class="form-control" (change)="selectChangeSubjectHandler($event)" required>
+            <option value="">Select Subject</option>
+            <option *ngFor="let subject of registeredSubjects" value="{{subject.id}}">{{ subject.subjectsName }}</option>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+        <label for="file">Choose a note file</label>
+       <input type="file" class="form-control" name="file" id="subject" (change)="selectFileHandler($event)" required/>
+      </div>
+
+      <!-- progress bar start -->
+      <div [hidden]="!currentFile" class="progress form-group">
+        <div
+          class="progress-bar progress-bar-striped bg-success"
+          role="progressbar"
+          [style.width.%]="progress"
+        >
+       
+        </div>
+      </div>
+      <!-- progress bar end -->
+    </form>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="closeDialog()" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i></button>
+        <button type="button" class="btn btn-primary" [disabled]="!(isSelectedFile && isSelectedProgram && isSelectedSemester && isSelectedSubject) || successfulUpload" (click)="upload()"><i class="fas fa-cloud-upload-alt"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- End of modal -->
+
+     <nav class="navbar" style="float: right;">
+     <input type="text" class="form-control" name="searchResult" [(ngModel)]="searchResult" (ngModelChange)="search()" placeholder="Type to search" />
+    </nav>
+
+     <div class="panel-body">
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover" id="myTable">
+            <thead class="thead-light">
+                <tr>
+                    <th  (click)="sort('id')"># &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('addedBy')">Added By &nbsp; <i class="fa fa-sort" ></i></th>
+                    <th (click)="sort('addedTime')">Added At &nbsp; <i class="fa fa-sort" ></i></th>
+                    <th (click)="sort('program')">Program &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('semester')" >Semester &nbsp; <i class="fa fa-sort" ></i></th>
+                    <th (click)="sort('subject')">Subject &nbsp; <i class="fa fa-sort"></i></th>
+                    <th (click)="sort('fileType')">File Type &nbsp; <i class="fa fa-sort"></i></th>
+                   
+                    
+                    <th style="white-space: nowrap;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let notes of content |orderBy : key : reverse | paginate: { id: 'listing_pagination',itemsPerPage: 8,currentPage: page,totalItems: totalRecords }">
+                    <td>{{ notes.id }}</td>
+                    <td>{{ notes.addedBy }}</td>
+                    <td>{{ notes.addedTime }}</td>
+                    <td>{{ notes.program }}</td>
+                    <td>{{ notes.semester }}</td>
+                    <td>{{ notes.subject }}</td>
+                    <td>{{ notes.fileType }}</td>
+                   
+                    <td style="white-space: nowrap;">
+                      <button  class="btn btn-danger" 
+                      mwlConfirmationPopover
+                      [popoverTitle]="popoverTitle"
+                      [popoverMessage]="popoverMessage"
+                      placement="left"
+                      (confirm)="deleteNotes(notes.id)"
+                      (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button> |
+                        <button (click)="updateNotes(notes.id)" class="btn btn-primary"><i class="fa fa-edit"></i></button> |
+                        <button (click)="viewNotes(notes.id)" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-eye"></i></button>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table> 
+        <div>
+            <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+        </div>
+    </div> 
+       
+    </div>
+</div>
+
+
+
+  
+<!-- 
+   <div id="noteViewPopup" class="pdf-modal" [hidden]="!noteView">
+    <span class="close cursor" (click)="closePdf()">&times;</span>
+    <pdf-viewer [src]="retrievedNote" [render-text]="true" [show-all]="true" style="display: block;">
+
+    </pdf-viewer>
+    </div> -->
+
+
+    <!-- Pdf viewer modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog custom-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Happy Reading</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <pdf-viewer [src]="retrievedNote" [render-text]="true" [show-all]="true" style="display: block;">
+
+        </pdf-viewer>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- End of Pdf Viewer modal -->
+
+
+
