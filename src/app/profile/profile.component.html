@@ -31,6 +31,10 @@
      
 
       </div>
+      <div class="modal-footer">
+        <button (click)="removeProfilePicture(currentUser.id)" class="btn btn-danger">Remove Profile Picture</button> &nbsp;
+        <button  class="btn btn-primary" data-toggle="modal" data-target="#updateProfilePicModal"  >Change Profile Picture</button>
+      </div>
     </div>
   </div>
 </div>
@@ -38,14 +42,79 @@
 
 
 
+ <!--Update Profile Image Modal -->
+ <div class="modal fade" id="updateProfilePicModal" tabindex="-1" role="dialog" aria-labelledby="profileImageModalLongTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title" id="profileImageModalLongTitle">Profile Avatar</h5> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <label for="file">Choose an image </label>
+       <input type="file" class="form-control" name="file" id="profile" (change)="selectFileHandler($event)" required/>
+      
 
+      </div>
+      <div class="modal-footer">
+        
+        <button (click)="updateProfilePicture(currentUser.id)" [disabled]="isLoading" class="btn btn-primary">
+          <img *ngIf="isLoading" src="../../assets/loadingSpinner.gif" alt="loading" style="width: 24px;">
+          Update</button>
+      </div>
+  
+    </div>
+  </div>
+</div>
+<!--Update Profile image modal section ends-->
 
 
 
 
 
       <img  *ngIf="!retrievedImage" class="images" src="../assets/avatar.jpg" alt="Avatar" style="height: 60px; width: 60px; border-radius:50% ;"/>
-      <h3>
+     <br> <a *ngIf="!retrievedImage" style="cursor: pointer; text-decoration: none; color: dodgerblue;" data-toggle="modal" data-target="#addProfilePicModal">Add Profile Picture</a>
+      
+     
+     
+      <!--Add Profile Image Modal -->
+ <div class="modal fade" id="addProfilePicModal" tabindex="-1" role="dialog" aria-labelledby="profileImageModalLongTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title" id="profileImageModalLongTitle">Profile Avatar</h5> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <label for="file">Choose an image </label>
+       <input type="file" class="form-control" name="file" id="profile" (change)="selectFileHandler($event)" required/>
+      
+
+      </div>
+      <div class="modal-footer">
+        <button (click)="uploadProfilePicture(currentUser.id)" [disabled]="isLoading" class="btn btn-primary">
+          <img *ngIf="isLoading" src="../../assets/loadingSpinner.gif" alt="loading" style="width: 24px;">
+          Upload</button>
+      </div>
+  
+    </div>
+  </div>
+</div>
+<!--Add Profile image modal section ends-->
+     
+     
+     
+     
+     
+     
+     
+     <h3>
         <strong>{{ currentUser.fullname }}</strong> <br> @{{ currentUser.username }}
       </h3>
       <p>{{ followerCount }} &nbsp;&nbsp;&nbsp;&nbsp; {{ followingCount }}</p>

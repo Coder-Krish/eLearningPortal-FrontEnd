@@ -1,4 +1,6 @@
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { UserService } from '../_services/user.service';
 
@@ -60,13 +62,17 @@ export class ProfileComponent implements OnInit {
   commenterProfileImageDir:any;
   commenterProfileImage:any;
   isCommenterProfileImagePresent=false;
+  selectedFile:any;
+  isSelectedFile:boolean= false;
+  isLoading:boolean = false;
+  progress = 0;
   
   
 
 
   
 
-  constructor(private token: TokenStorageService,private userService: UserService) { }
+  constructor(private token: TokenStorageService,private userService: UserService, private snackBar:MatSnackBar) { }
 
   ngOnInit(): void {
    
@@ -457,5 +463,165 @@ export class ProfileComponent implements OnInit {
     console.log("hello");
     console.log(event.data);
   }
+
+
+  uploadProfilePicture(userId){
+
+    this.isLoading = true;
+    const uploadProfileImage:FormData = new FormData();
+    uploadProfileImage.append('profile',this.selectedFile, this.selectedFile.name);
+    this.userService.addProfile(userId,uploadProfileImage).subscribe(
+      (res: HttpEvent<any>) =>{
+        // console.log("I am inside the caller method");
+            this.isLoading = false;
+           switch(res.type){
+             case HttpEventType.Sent:
+               console.log('Request has been made!');
+               break;
+             case HttpEventType.ResponseHeader:
+               console.log('Response header has been received!');
+               break;
+             case HttpEventType.UploadProgress:
+               this.progress = Math.round(res.loaded / res.total * 100);
+               console.log(`Uploaded! ${this.progress}%`);
+               break;
+             case HttpEventType.Response:
+               console.log('Profile Image Added Successfully!', res.body);
+               //this.uploadSuccessfulMessage=res.body;
+               if(this.progress ==100){
+               this.snackBar.open(res.body.message,'Dismiss',{
+                 duration: 4000,
+                 verticalPosition: 'bottom',
+                 horizontalPosition: 'right',
+                 panelClass:['success-snackBar'],
+        
+               });
+
+               setTimeout(()=>{
+                  window.location.reload();
+               },5000)
+               break;
+             }
+               default:
+               console.log(res.type);
+           }
+       },
+       err =>{
+         this.progress = 0;
+         this.snackBar.open(err.body.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+
+        setTimeout(()=>{
+           window.location.reload();
+        },5000)
+       }
+     );
+
+  }
+
+  updateProfilePicture(userId){
+    const updateProfileImage:FormData = new FormData();
+    updateProfileImage.append('profile',this.selectedFile, this.selectedFile.name);
+
+    this.userService.updateProfile(userId,updateProfileImage).subscribe(
+      (res: HttpEvent<any>) =>{
+        // console.log("I am inside the caller method");
+          
+           switch(res.type){
+             case HttpEventType.Sent:
+               console.log('Request has been made!');
+               break;
+             case HttpEventType.ResponseHeader:
+               console.log('Response header has been received!');
+               break;
+             case HttpEventType.UploadProgress:
+               this.progress = Math.round(res.loaded / res.total * 100);
+               console.log(`Updated! ${this.progress}%`);
+               break;
+             case HttpEventType.Response:
+              // console.log('Profile Image updated Successfully!', res.body);
+               //this.uploadSuccessfulMessage=res.body;
+               if(this.progress ==100){
+               this.snackBar.open(res.body.message,'Dismiss',{
+                 duration: 4000,
+                 verticalPosition: 'bottom',
+                 horizontalPosition: 'right',
+                 panelClass:['success-snackBar'],
+        
+               });
+
+               setTimeout(()=>{
+                 this.isLoading = true;
+                  window.location.reload();
+               },4000)
+               break;
+             }
+               default:
+               console.log(res.type);
+           }
+       },
+       err =>{
+         this.progress = 0;
+         this.snackBar.open(err.body.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+
+        setTimeout(()=>{
+           window.location.reload();
+        },5000)
+       }
+     );
+    
+
+  }
+
+  removeProfilePicture(userId){
+    this.userService.deleteProfilePictureByUserId(userId).subscribe(
+      res =>{
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+
+        setTimeout(() =>{
+          window.location.reload();
+        }, 5000);
+      },
+      err =>{
+        this.snackBar.open(err.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+
+        setTimeout(() =>{
+          window.location.reload();
+        }, 5000);
+      }
+    );
+  }
+
+  selectFileHandler(event:any){
+    this.selectedFile=event.target.files[0];
+    this.isSelectedFile=true;
+    // console.log(this.selectedFile);
+    
+
+  }
+
 
 }

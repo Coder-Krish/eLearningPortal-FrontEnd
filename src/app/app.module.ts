@@ -35,6 +35,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
 import { ProgramsAndSubjectsComponent } from './programs-and-subjects/programs-and-subjects.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
   
 
@@ -52,7 +54,9 @@ import { ProgramsAndSubjectsComponent } from './programs-and-subjects/programs-a
     PostsComponent,
     DiscussionsComponent,
     NotesComponent,
-    ProgramsAndSubjectsComponent
+    ProgramsAndSubjectsComponent,
+    ChangePasswordComponent,
+    ForgotPasswordComponent
     
   ],
   imports: [

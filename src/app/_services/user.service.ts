@@ -277,6 +277,42 @@ return this.http.get(uploadDir, {responseType: 'blob'});
     return this.http.put(environment.apiUrls + 'admin/updateUser/' + id, {fullname:userfullname,institution:userInstitution,phone:userPhone,address:userAddress,gender:userGender}, {responseType:'json'});
   }
 
+  changePassword(userId,username,newPassword,confirmPassword):Observable<any>{
+    return this.http.put(environment.apiUrls + 'changepassword/updatepassword/' + userId,{username:username,newPassword:newPassword,confirmPassword:confirmPassword}, {responseType:'json'});
+  }
+  generateOtp(username,email){
+    return this.http.post(environment.apiUrls + 'forgotPassword/generateOtp', {username:username,email:email}, {responseType:'json'});
+  }
+  validateOtp(username,otpnum){
+
+    // let urlSearchParams = new URLSearchParams();
+    // urlSearchParams.append('otpnum',otpnum);
+
+      return this.http.post(environment.apiUrls + 'forgotPassword/validateOtp/' + username+'?otpnum='+otpnum,{responseType:'json'});
+  }
+
+  deleteProfilePicture(profilePictureId):Observable<any>{
+    return this.http.delete(environment.apiUrls + 'admin/deleteProfilePictureById/' + profilePictureId,{responseType:'json'});
+  }
+
+  addProfile(userId:Number,profile:FormData){
+    
+    return this.http.post(environment.apiUrls + 'profilePicture/addProfilePicture/' + userId, profile, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  updateProfile(userId:Number,profile:FormData){
+    
+    return this.http.put(environment.apiUrls + 'profilePicture/updateProfilePicture/' + userId, profile, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+  deleteProfilePictureByUserId(userId):Observable<any>{
+    return this.http.delete(environment.apiUrls + 'profilePicture/deleteProfilePicture/' + userId, {responseType:'json'});
+  }
  
 
 

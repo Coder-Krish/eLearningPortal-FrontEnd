@@ -223,7 +223,9 @@
                     <td colspan="2" class="image-td"><img *ngIf="isretrievedProfileImage" class="profile-thumbnail" [src]="retrievedProfileImage" alt="logo">
                         <img  *ngIf="!isretrievedProfileImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo"> <br>
                         <br>
-                        <button class="btn btn-danger" (click)="removeProfilePicture(profilePictureId)">Remove Profile</button>&nbsp;&nbsp;<button class="btn btn-success" (click)="changeProfilePicture(profilePictureId)">Change Profile</button>
+                        <button class="btn btn-danger" *ngIf="isretrievedProfileImage" (click)="removeProfilePicture(profilePictureId)">Remove Profile</button>&nbsp;&nbsp;
+                        <button class="btn btn-success" *ngIf="isretrievedProfileImage" (click)="changeProfilePicture(profilePictureId)">Change Profile</button>
+                        <button class="btn btn-primary" *ngIf="!isretrievedProfileImage" (click)="uploadProfilePicture(userId)">Upload Profile Picture</button>
                     </td>
                   </tr>
                 </tbody>

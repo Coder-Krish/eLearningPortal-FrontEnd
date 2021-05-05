@@ -341,12 +341,42 @@ export class RegisteredUsersComponent implements OnInit {
   }
 
   removeProfilePicture(profilePicId){
-    console.log(profilePicId);
-    
+  
+    this.userService.deleteProfilePicture(profilePicId).subscribe(
+      res =>{
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+
+        setTimeout(() =>{
+          window.location.reload();
+        }, 5000);
+      },
+      err =>{
+        this.snackBar.open(err.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+
+        setTimeout(() =>{
+          window.location.reload();
+        }, 5000);
+      }
+    );
 
   }
   changeProfilePicture(profilePicId){
     console.log(profilePicId);
 
+  }
+  uploadProfilePicture(userId){
+    console.log(userId);
   }
 }

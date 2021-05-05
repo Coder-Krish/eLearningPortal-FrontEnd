@@ -13,6 +13,8 @@ import { PostsComponent } from './posts/posts.component';
 import { DiscussionsComponent } from './discussions/discussions.component';
 import { NotesComponent } from './notes/notes.component';
 import { ProgramsAndSubjectsComponent } from './programs-and-subjects/programs-and-subjects.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
 { path: 'home', component: HomeComponent },
@@ -35,6 +37,8 @@ const routes: Routes = [
 { path: 'discussions2/:id', component:DiscussionsComponent},
 { path: 'discussions3/:id', component:DiscussionsComponent},
 { path: 'notes', component:NotesComponent},
+{ path: 'change-password', component:ChangePasswordComponent},
+{ path: 'forgot-password', component:ForgotPasswordComponent},
 { path: 'programs-and-subjects/:id', component:ProgramsAndSubjectsComponent},
 { path: '', redirectTo: 'login', pathMatch: 'full' }];
 
