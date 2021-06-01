@@ -175,17 +175,17 @@
                 </td>
                 <td class="intro-td">{{ postedBy }}<br> {{ postedTime }}</td>
                 <td class="options-td">
-                  <div class="dropdown-show">
+                  <!-- <div class="dropdown-show">
                     <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-h"></i>
                     </a>
                     
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenu">
                       <a class="dropdown-item" href="#">Edit</a>
                       <a class="dropdown-item" href="#">Delete</a>
                       <a class="dropdown-item" href="#">Share</a>
                     </div>
-                    </div>
+                    </div> -->
                   
                  </td>
               </tr>
@@ -203,7 +203,7 @@
               <thead>Comments</thead>
             
                 <tbody *ngIf="isCommentPresent">
-                    <tr *ngFor= "let comments of thisIsComment | paginate: { id: 'comments_pagination',itemsPerPage: 4,currentPage: page,totalItems: totalRecords }">
+                    <tr *ngFor= "let comments of thisIsComment | paginate: { id: 'comments_pagination',itemsPerPage: 2,currentPage: page,totalItems: totalRecords }">
                       <td class="image-td"><img *ngIf="isCommenterProfileImagePresent" class="profile-thumbnail" [src]="comments.commenterImage" alt="profile Image">
                           <img *ngIf="!isCommenterProfileImagePresent" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
                       </td>
@@ -216,9 +216,9 @@
                           </a>
                           
                           <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                            <a class="dropdown-item" href="#">Edit</a>
+                            <!-- <a class="dropdown-item" href="#">Edit</a> -->
                             <a class="dropdown-item" (click)="deleteReply(comments.id)">Delete</a>
-                            <a class="dropdown-item" href="#">Share</a>
+                            <!-- <a class="dropdown-item" href="#">Share</a> -->
                           </div>
                           </div>
                         

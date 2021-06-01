@@ -37,6 +37,8 @@ import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
 import { ProgramsAndSubjectsComponent } from './programs-and-subjects/programs-and-subjects.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+
 
   
 
@@ -78,6 +80,10 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     ConfirmationPopoverModule.forRoot({
       confirmButtonType: 'danger', // set defaults here
     }),
+
+    NgApexchartsModule,
+
+
     
  
     

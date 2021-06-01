@@ -349,8 +349,8 @@ export class PostsComponent implements OnInit {
     this.userService.deleteComments(id).subscribe(
       res =>{
 
-        this.isDeleted=true;
-    this.snackBar.open(res.message,'Dismiss',{
+      this.isDeleted=true;
+      this.snackBar.open(res.message,'Dismiss',{
       duration: 4000,
       verticalPosition: 'top',
       horizontalPosition: 'right',

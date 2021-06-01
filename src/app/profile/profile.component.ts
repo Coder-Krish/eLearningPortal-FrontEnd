@@ -33,20 +33,33 @@ export class ProfileComponent implements OnInit {
   isContentImageAvailable=false;
   isDiscussionImageAvailable=false;
 
+  isDiscussionImage = false;
+
   postedBy:any;
   postedTime:any;
   postedData:any;
+  postId:any;
+  postContent:any;
 
   contentImage:any;
   retrievedFile:any;
   retrievedUploadDir:[];
   retrievedDiscussionUploadDir:[];
+  retrievedDiscussionFile:any;
 
   postInModal:any;
   postedByInModal:any;
   postedTimeInModal:any;
   contentImageInModal:any;
   user:any;
+
+  discussionInModal:any;
+  discussionCreateddBy:any;
+  discussionCreateddTime:any;
+  discussionData:any;
+  discussionId:any;
+  discussionContent:any;
+
 
   isretrievedProfileImage=false;
   profilePictureDir:any;
@@ -58,6 +71,11 @@ export class ProfileComponent implements OnInit {
   commentedBy:any;
   commentedAt:any;
   isCommentPresent=false;
+  commentsContent:any;
+  commentId:any;
+
+  replyContent:any;
+  replyId:any;
 
   commenterProfileImageDir:any;
   commenterProfileImage:any;
@@ -292,11 +310,12 @@ export class ProfileComponent implements OnInit {
   }
 
   viewPostInModal(id){
-    console.log("I am here with id= "+id);
+    //console.log("I am here with id= "+id);
     this.userService.getPostById(id).subscribe(
 
       post =>{
           this.postInModal=post;
+          this.postId = post.id;
           this.postedByInModal=post.postedBy;
           this.postedTimeInModal=post.postedTime;
           this.postedDataInModal=post.content;
@@ -403,8 +422,125 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  viewDiscussionInModal(id:number){
+    this.userService.getDiscussionByDiscussionId(id).subscribe(
+      (res:any) =>{
 
+          this.discussionInModal=res;
+          this.discussionId = res.id;
+          this.discussionCreateddBy=res.postedBy;
+          this.discussionCreateddTime=res.postedAt;
+          this.discussionData=res.content;
+          this.user=res.user;
 
+          this.profilePictureHandler(this.currentUserId);
+
+          this.contentImage=res.uploadDir;
+          if(this.contentImage!=null){
+          this.userService.getFile(this.contentImage).subscribe(
+            res =>{
+              
+              this.isDiscussionImage=true;
+              this.createDiscussionImageFromBlob(res); 
+            },
+            err =>{
+              console.log(err);
+              
+            }
+      
+          );
+          }else{
+            this.isDiscussionImage=false;
+          }
+
+        
+            //for comments
+
+            this.userService.getRepliesByDiscussionId(id).subscribe(
+              replies =>{
+    
+                // console.log(replies);
+                if(replies.totalElements>0){
+    
+                  this.isCommentPresent=true;
+                  //console.log(replies);
+    
+                  this.thisIsComment= replies.content;
+                 
+                for(let i=0; i< replies.content.length; i++){
+    
+                    this.userService.getUserById(replies.content[i].user_id).subscribe(
+                      user =>{
+                        this.thisIsComment[i].username=user.username;
+                      },
+                      err =>{
+                        console.log(err);
+                      }
+                      
+                    );
+    
+                    this.userService.getProfilePictureDir(replies.content[i].user_id).subscribe(
+                      profileDir =>{
+                        this.commenterProfileImageDir=profileDir.uploadDir;
+                      
+                        //console.log(this.commenterProfileImageDir);
+    
+    
+                        this.userService.loadProfilePicture(this.commenterProfileImageDir).subscribe(
+                          (res:Blob) =>{
+        
+                            this.commenterProfileImageDir=null;
+                            let reader =new FileReader();
+                            reader.addEventListener("load", ()=>{
+                            this.commenterProfileImage=reader.result;
+                            this.thisIsComment[i].commenterImage=this.commenterProfileImage;
+                            this.isCommenterProfileImagePresent=true;
+                            },false);
+        
+                            if(res){
+                             reader.readAsDataURL(res);
+                            }
+                          }
+                        );
+    
+    
+                      },
+                      err =>{
+                        console.log(err);
+                      }
+                    );
+                   // console.log("i am here");
+                   
+    
+                }
+               // console.log(this.thisIsComment);
+    
+    
+                }else{
+                  this.isCommentPresent=false;
+                  
+                }
+              },
+              err =>{
+                console.log(err);
+              }
+              
+            );
+  
+      }
+    );
+  }
+
+  createDiscussionImageFromBlob(file:Blob){
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+       this.retrievedDiscussionFile = reader.result;
+       
+    },false);
+    if(file){
+      reader.readAsDataURL(file);
+    }
+  }
   createContentImageFromBlob(file: Blob){
 
     let reader = new FileReader();
@@ -491,7 +627,7 @@ export class ProfileComponent implements OnInit {
                if(this.progress ==100){
                this.snackBar.open(res.body.message,'Dismiss',{
                  duration: 4000,
-                 verticalPosition: 'bottom',
+                 verticalPosition: 'top',
                  horizontalPosition: 'right',
                  panelClass:['success-snackBar'],
         
@@ -510,7 +646,7 @@ export class ProfileComponent implements OnInit {
          this.progress = 0;
          this.snackBar.open(err.body.message,'Dismiss',{
           duration: 4000,
-          verticalPosition: 'bottom',
+          verticalPosition: 'top',
           horizontalPosition: 'right',
           panelClass:['red-snackBar'],
  
@@ -549,7 +685,7 @@ export class ProfileComponent implements OnInit {
                if(this.progress ==100){
                this.snackBar.open(res.body.message,'Dismiss',{
                  duration: 4000,
-                 verticalPosition: 'bottom',
+                 verticalPosition: 'top',
                  horizontalPosition: 'right',
                  panelClass:['success-snackBar'],
         
@@ -569,7 +705,7 @@ export class ProfileComponent implements OnInit {
          this.progress = 0;
          this.snackBar.open(err.body.message,'Dismiss',{
           duration: 4000,
-          verticalPosition: 'bottom',
+          verticalPosition: 'top',
           horizontalPosition: 'right',
           panelClass:['red-snackBar'],
  
@@ -589,7 +725,7 @@ export class ProfileComponent implements OnInit {
       res =>{
         this.snackBar.open(res.message,'Dismiss',{
           duration: 4000,
-          verticalPosition: 'bottom',
+          verticalPosition: 'top',
           horizontalPosition: 'right',
           panelClass:['red-snackBar'],
  
@@ -602,7 +738,7 @@ export class ProfileComponent implements OnInit {
       err =>{
         this.snackBar.open(err.message,'Dismiss',{
           duration: 4000,
-          verticalPosition: 'bottom',
+          verticalPosition: 'top',
           horizontalPosition: 'right',
           panelClass:['red-snackBar'],
  
@@ -623,5 +759,229 @@ export class ProfileComponent implements OnInit {
 
   }
 
+  deletePostById(id:number){
+    this.userService.deletePosts(id).subscribe(
+      res =>{
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['success-snackBar'],
+ 
+        });
 
+        this.ngOnInit();
+      },
+      err =>{
+        console.log(err);
+      }
+    );
+  }
+  
+  deleteDiscussionById(id:number){
+    this.userService.deleteDiscussion(id).subscribe(
+      res =>{
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['success-snackBar'],
+ 
+        });
+
+        setTimeout(()=>{
+          window.location.reload();
+        }, 4000)
+      },
+      err =>{
+        console.log(err);
+      }
+    );
+  }
+
+  deleteCommentsById(id:number){
+      this.userService.deleteComments(id).subscribe(
+        res =>{
+          this.snackBar.open(res.message,'Dismiss',{
+            duration: 4000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass:['success-snackBar'],
+   
+          });
+        },
+        err =>{
+          console.log(err);
+        }
+      );
+  }
+
+  deleteRepliesById(id:number){
+      this.userService.deleteReply(id).subscribe(
+        res =>{
+          this.snackBar.open(res.message,'Dismiss',{
+            duration: 4000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass:['success-snackBar'],
+   
+          });
+        },
+        err =>{
+          console.log(err);
+        }
+      );
+  }
+
+  editPostClicked(id:number){
+    this.userService.getPostById(id).subscribe(
+      res =>{
+        this.postContent = res.content;
+        this.postId = res.id;
+      },
+      err =>{
+        console.log(err);
+      }
+    );
+  }
+
+  updatePost(id:number){
+    this.userService.updatePost(id, this.postContent).subscribe(
+      res =>{
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['success-snackBar'],
+ 
+        });
+        this.ngOnInit();
+      },
+      err =>{
+        this.snackBar.open(err.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+        this.ngOnInit();
+      }
+    );
+  }
+
+  editDiscussionClicked(id:number){
+    this.userService.getDiscussionById(id).subscribe(
+      res =>{
+          this.discussionId = res.id;
+          this.discussionContent = res.content;
+      },
+      err =>{
+        console.log(err);
+      }
+    );
+  }
+  updateDiscussion(id:number){
+    this.userService.updateDiscussion(id, this.discussionContent).subscribe(
+      res =>{
+        //console.log(res);
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['success-snackBar'],
+ 
+        });
+        this.ngOnInit();
+      },
+      err =>{
+        //console.log(err);
+        this.snackBar.open(err.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+        this.ngOnInit();
+      }
+    );
+  }
+
+  editCommentClicked(id:number){
+  this.userService.getCommentById(id).subscribe(
+    res =>{
+      this.commentsContent = res.comment;
+      this.commentId = res.id;
+      this.postId = res.post_id
+    },
+    err =>{
+      console.log(err);
+    }
+  );
+  }
+
+  updateComment(id:number,postId:number){
+    this.userService.updateComment(id,postId, this.commentsContent).subscribe(
+      res =>{
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['success-snackBar'],
+ 
+        });
+        this.ngOnInit();
+      },
+      err =>{
+        this.snackBar.open(err.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+        this.ngOnInit();
+      }
+    );
+
+  }
+
+  editReplyClicked(id:number){
+    this.userService.getReplayById(id).subscribe(
+      res =>{
+        this.replyContent = res.reply;
+        this.replyId = res.id;
+        this.discussionId = res.discussion_id;
+      },
+      err =>{
+        console.log(err);
+      }
+    );
+  }
+
+  updateReply(id:number, discussionId:number){
+    this.userService.updateReply(id, discussionId, this.replyContent).subscribe(
+      res =>{
+        this.snackBar.open(res.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['success-snackBar'],
+ 
+        });
+       
+      },
+      err =>{
+        this.snackBar.open(err.message,'Dismiss',{
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass:['red-snackBar'],
+ 
+        });
+        
+      }
+    );
+  }
 }

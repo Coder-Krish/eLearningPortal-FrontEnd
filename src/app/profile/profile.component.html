@@ -174,9 +174,9 @@
                     </a>
                     
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                      <a class="dropdown-item" href="#">Edit</a>
-                      <a class="dropdown-item" href="#">Delete</a>
-                      <a class="dropdown-item" href="#">Share</a>
+                      <a class="dropdown-item" href="#" style="cursor: pointer;" data-toggle="modal" data-target="#postEditModal" (click)="editPostClicked(post.id)">Edit</a>
+                      <a class="dropdown-item" (click)="deletePostById(post.id)" style="cursor: pointer;">Delete</a>
+                    
                     </div>
                     </div>
                   
@@ -205,7 +205,7 @@
               <tr>
                 <td class="image-td"><img *ngIf="retrievedImage" class="profile-thumbnail" [src]="retrievedImage" alt="logo">
                     <img *ngIf="!retrievedImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
-                </td><a href="https://www.google.com" style="text-decoration: none; color: black; cursor: pointer;">
+                </td><a href="#" (click)="viewDiscussionInModal(discussion.id)" data-toggle="modal" data-target="#discussionModal" style="text-decoration: none; color: black; cursor: pointer;">
                 <td class="intro-td">{{ discussion.postedBy }}<br> {{ discussion.postedAt }} <br> <br>
                   {{ discussion.content }} <br><br>
     
@@ -223,9 +223,9 @@
                     </a>
                     
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                      <a class="dropdown-item" href="#">Edit</a>
-                      <a class="dropdown-item" href="#">Delete</a>
-                      <a class="dropdown-item" href="#">Share</a>
+                      <a class="dropdown-item" href="#" (click)="editDiscussionClicked(discussion.id)" data-toggle="modal" data-target="#editDiscussionModal" style="cursor: pointer;">Edit</a>
+                      <a class="dropdown-item" (click)="deleteDiscussionById(discussion.id)" style="cursor: pointer;">Delete</a>
+                     
                     </div>
                     </div>
                   
@@ -271,9 +271,9 @@
                   </a>
                   
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                    <a class="dropdown-item" href="#">Edit</a>
-                    <a class="dropdown-item" href="#">Delete</a>
-                    <a class="dropdown-item" href="#">Share</a>
+                    <a class="dropdown-item" href="#" (click)="editPostClicked(postId)" data-toggle="modal" data-target="#postEditModal" style="cursor: pointer;">Edit</a>
+                    <a class="dropdown-item" (click)="deletePostById(postId)" style="cursor: pointer;">Delete</a>
+                   
                   </div>
                   </div>
                 
@@ -306,9 +306,9 @@
                         </a>
                         
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Delete</a>
-                          <a class="dropdown-item" href="#">Share</a>
+                          <a class="dropdown-item" href="#" (click)="editCommentClicked(comments.id)" data-toggle="modal" data-target="#commentEditModal" style="cursor: pointer;">Edit</a>
+                          <a class="dropdown-item" (click)="deleteCommentsById(comments.id)" style="cursor: pointer;">Delete</a>
+                          
                         </div>
                         </div>
                       
@@ -332,7 +332,195 @@
 </div>
 <!--Modal section ends-->
 
-    
+
+ <!-- Discussion displaying Modal -->
+ <div class="modal fade" id="discussionModal" tabindex="-1" role="dialog" aria-labelledby="discussionModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="discussionModalLongTitle">Discussion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="image-td"><img *ngIf="isretrievedProfileImage" class="profile-thumbnail" [src]="retrievedProfileImage" alt="logo">
+                  <img *ngIf="!isretrievedProfileImage" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+              </td>
+              <td class="intro-td">{{ discussionCreateddBy }}<br> {{ discussionCreateddTime }}</td>
+              <td class="options-td">
+                <div class="dropdown-show">
+                  <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </a>
+                  
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                    <a class="dropdown-item" href="#" (click)="editDiscussionClicked(discussionId)" data-toggle="modal" data-target="#editDiscussionModal" style="cursor: pointer;">Edit</a>
+                    <a class="dropdown-item" (click)="deleteDiscussionById(discussionId)" style="cursor: pointer;">Delete</a>
+                   
+                  </div>
+                  </div>
+                
+               </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>{{ discussionData }} <br><br>
+                 <img *ngIf="isDiscussionImage" class="content-image" [src]="retrievedDiscussionFile" alt="">
+             </td>
+              <td></td>
+             </tr>
+          </tbody>
+        </table>
+        <hr>
+        <table class="table">
+            <thead>Comments</thead>
+          
+              <tbody *ngIf="isCommentPresent">
+                  <tr *ngFor= "let comments of thisIsComment | paginate: { id: 'comments_pagination',itemsPerPage: 4,currentPage: page,totalItems: totalRecords }">
+                    <td class="image-td"><img *ngIf="isCommenterProfileImagePresent" class="profile-thumbnail" [src]="comments.commenterImage" alt="profile Image">
+                        <img *ngIf="!isCommenterProfileImagePresent" class="profile-thumbnail" src="../assets/avatar.jpg" alt="logo">
+                    </td>
+                    <td class="intro-td">{{ comments.username }}<br> {{ comments.repliedAt }} <br> <br>
+                  {{ comments.reply }}</td>
+                    <td class="options-td">
+                      <div class="dropdown-show">
+                        <a  href="#" role="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-ellipsis-h"></i>
+                        </a>
+                        
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                          <a class="dropdown-item" href="#" (click)="editReplyClicked(comments.id)" data-toggle="modal" data-target="#replyEditModal" style="cursor: pointer;">Edit</a>
+                          <a class="dropdown-item" (click)="deleteRepliesById(comments.id)" style="cursor: pointer;">Delete</a>
+                         
+                        </div>
+                        </div>
+                      
+                     </td>
+                     
+                  </tr>
+                  
+              
+                </tbody>
+                <tbody *ngIf="!isCommentPresent"><tr><td>No Comments</td></tr></tbody>
+
+        </table>
+
+        <div>
+          <pagination-controls  id="comments_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+      </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal section ends-->
+
+<!--Post edit modal start-->
+
+<div class="modal fade" id="postEditModal" tabindex="-1" role="dialog" aria-labelledby="postEditModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postEditModalModalLongTitle">Edit Post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <label>Post content:</label>
+        <input type="text" name="editPost" id="editPost" class="form-control" [(ngModel)]="postContent">
+        <br>
+        <button type="submit" (click)="updatePost(postId)" class="btn btn-primary" style="float: right;">Update</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Post edit modal end-->
+
+
+<!--Discussion edit modal start-->
+
+<div class="modal fade" id="editDiscussionModal" tabindex="-1" role="dialog" aria-labelledby="editDiscussionModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDiscussionModalModalLongTitle">Edit Discussion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <label>Discussion content:</label>
+        <input type="text" name="editDiscussion" id="editDiscussion" class="form-control" [(ngModel)]="discussionContent">
+        <br>
+        <button type="submit" (click)="updateDiscussion(discussionId)" class="btn btn-primary" style="float: right;">Update</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Discussion edit modal end-->
+
+<!--Posts Comments edit modal start-->
+
+<div class="modal fade" id="commentEditModal" tabindex="-1" role="dialog" aria-labelledby="editCommentsModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCommentsModalModalLongTitle">Edit Comments</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <label>Comment:</label>
+        <input type="text" name="editComment" id="editComment" class="form-control" [(ngModel)]="commentsContent">
+        <br>
+        <button type="submit" (click)="updateComment(commentId,postId)" class="btn btn-primary" style="float: right;">Update</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Posts comments edit modal end-->
+
+
+<!--Discussion replies edit modal start-->
+
+<div class="modal fade" id="replyEditModal" tabindex="-1" role="dialog" aria-labelledby="editReplyModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editReplyModalModalLongTitle">Edit Reply</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <label>Comment:</label>
+        <input type="text" name="editReply" id="editReply" class="form-control" [(ngModel)]="replyContent">
+        <br>
+        <button type="submit" (click)="updateReply(replyId,discussionId)" class="btn btn-primary" style="float: right;">Update</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Discussion replies edit modal end-->
+
     <!-- About section -->
     <div class="about" id="about-section" *ngIf="isAboutClicked">
     <p>

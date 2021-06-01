@@ -37,6 +37,7 @@ export class NotesComponent implements OnInit{
   selectedSubject:any;
   selectedFile:any;
   currentFile:File;
+  noteId:any;
 
   uploadSuccessfulMessage:any;
 
@@ -192,9 +193,77 @@ export class NotesComponent implements OnInit{
   
   }
 
+  updateNotesClicked(id:number){
+    this.noteId = id;
+   
+  }
+
+  updateNotes(id:number){
+    this.currentFile=this.selectedFile
+    //this.originalFile=this.selectedFile;
+    //FormData API provides methods and properties to allow us easily prepare form data to be sent with POST HTTP requests.
+    const updateNoteFile:FormData = new FormData();
+    updateNoteFile.append('file',this.selectedFile, this.selectedFile.name);
+    this.userService.updateNotes(id, updateNoteFile).subscribe(
+      (res: HttpEvent<any>) =>{
+        // console.log("I am inside the caller method");
+ 
+           switch(res.type){
+             case HttpEventType.Sent:
+               console.log('Request has been made!');
+               break;
+             case HttpEventType.ResponseHeader:
+               console.log('Response header has been received!');
+               break;
+             case HttpEventType.UploadProgress:
+               this.progress = Math.round(res.loaded / res.total * 100);
+               console.log(`Uploaded! ${this.progress}%`);
+               break;
+             case HttpEventType.Response:
+               console.log('Note updated Successfully!', res.body);
+               //this.uploadSuccessfulMessage=res.body;
+               if(this.progress ==100){
+               this.snackBar.open(res.body.message,'Dismiss',{
+                 duration: 4000,
+                 verticalPosition: 'top',
+                 horizontalPosition: 'right',
+                 panelClass:['success-snackBar'],
+        
+               });
+               //window.location.reload();
+               //document.getElementById('add-new-note').style.display="none";
+               this.successfulUpload=true;
+             }
+              
+               default:
+               console.log(res.type);
+           }
+ 
+           this.userService.getAllNotes().subscribe(
+             res =>{
+               this.isAllNotes=true;
+               this.content=res;
+               this.totalRecords=this.content.length;
+ 
+             },
+             err =>{
+               console.log(err);
+             }
+           )
+       },
+       err =>{
+         this.progress = 0;
+          this.uploadSuccessfulMessage = 'Could not upload the file!';
+       
+         console.log(err.error.message);
+       }
+     );
+
+  }
 
   closeDialog(){
-    window.location.reload();
+    //window.location.reload();
+    this.ngOnInit();
   }
 
   deleteNotes(id){

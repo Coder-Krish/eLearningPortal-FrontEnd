@@ -66,8 +66,6 @@ export class ProgramsAndSubjectsComponent implements OnInit {
           }
         );
 
-      
-
     }
     
   }
@@ -96,7 +94,8 @@ export class ProgramsAndSubjectsComponent implements OnInit {
           horizontalPosition:'right',
           panelClass:['success-snackBar'],
         });
-        console.log(reply);
+        this.ngOnInit();
+        //console.log(reply);
       },
       err =>{
         console.log(err.message);
@@ -120,6 +119,7 @@ export class ProgramsAndSubjectsComponent implements OnInit {
           horizontalPosition:'right',
           panelClass:['success-snackBar'],
         });
+        this.ngOnInit();
 
       },
       err =>{
@@ -170,7 +170,7 @@ export class ProgramsAndSubjectsComponent implements OnInit {
         console.log(err);
       }
 
-    )
+    );
 
 
 
@@ -186,6 +186,7 @@ export class ProgramsAndSubjectsComponent implements OnInit {
           horizontalPosition:'right',
           panelClass:['success-snackBar'],
         });
+        this.ngOnInit();
       },
       err =>{
         console.log(err);
@@ -240,7 +241,13 @@ export class ProgramsAndSubjectsComponent implements OnInit {
     console.log(subjectId);
     this.userService.updateSubject(subjectId,this.updateSemesterOfSubject,this.updatesubjectName).subscribe(
       res =>{
-          console.log(res);
+        this.snackBar.open(res.message, 'Dismiss',{
+          duration:4000,
+          verticalPosition:'top',
+          horizontalPosition:'right',
+          panelClass:['success-snackBar'],
+        });
+        //this.ngOnInit();
       },
       err =>{
         console.log(err);
@@ -250,7 +257,8 @@ export class ProgramsAndSubjectsComponent implements OnInit {
   }
 
   closeDialog(){
-    window.location.reload();
+    //window.location.reload();
+    this.ngOnInit();
   }
 
   selectInputProgramHandler(event:any){

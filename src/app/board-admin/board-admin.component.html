@@ -1,47 +1,263 @@
-<!-- <div class="container">
-    <header class="jumbotron">
-      <p>{{ content }}</p>
-    </header>
-  </div> -->
+<div class="container">
+  <div class="container-fluid">
+
+     <!--Pie-charts-->
+     <div class="row" style="margin-top: 30px;">
+
+      <div class="col-12 col-md-6 col-sm-3">
+        <div class="card bg-light">
+          <div id="chart">
+            <apx-chart 
+            [series]="usersChartOptions.series" 
+            [chart]="usersChartOptions.chart"
+            [labels]="usersChartOptions.labels" 
+            [responsive]="usersChartOptions.responsive">
+          </apx-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+      <div class="col-12 col-md-6 col-sm-3">
+        <div class="card bg-light ">
 
 
-  <div class="container-md">
-    <table class="table table-borderless table-sm">
-      <tbody>
-        <tr>
-          <th scope="row"></th>
-          <td><a routerLink="/users/registered-users" style="width: 100%; color: white; text-decoration: none;"><button  class="btn btn-success w-100">{{ countRegisteredUsers }}</button></a></td>
-          <td><a routerLink="/users/active-users" style="width: 100%; color: white; text-decoration: none;"><button  class="btn btn-warning w-100">{{ countActiveUsers }}</button></a></td>
-          <td><a routerLink="/users/inactive-users" style="width: 100%; color: white; text-decoration: none;"><button  class="btn btn-danger w-100">{{ countAllTheInActiveUsers }}</button></a></td>
-        </tr>
-  
-        <tr>
-          <th scope="row"></th>
-          <td><a routerLink="/posts/all-posts" style="color: white; text-decoration: none;"><button  class="btn btn-success w-100">{{ countAllThePosts }}</button></a></td>
-          <td><a routerLink="/posts/active-posts" style="color: white; text-decoration: none;"><button  class="btn btn-warning w-100">{{ countAllTheActivePosts }}</button></a></td>
-          <td><a routerLink="/posts/inactive-posts" style="color: white; text-decoration: none;"><button  class="btn btn-danger w-100">{{ countAllTheInActivePosts }}</button></a></td>
-        </tr>
-  
-        <tr>
-          <th scope="row"></th>
-          <td><a routerLink="/discussions/all-discussions" style="color: white; text-decoration: none;"><button  class="btn btn-success w-100">{{ countAllTheDiscussion }}</button></a></td>
-          <td><a routerLink="/discussions/active-discussions" style="color: white; text-decoration: none;"><button  class="btn btn-warning w-100">{{ countAllTheActiveDiscussion }}</button></a></td>
-          <td><a routerLink="/discussions/inactive-discussions" style="color: white; text-decoration: none;"><button  class="btn btn-danger w-100">{{ countAllTheInActiveDiscussion }}</button></a></td>
-        </tr>
-        <tr>
-          <th scope="row"></th>
-          <td><a routerLink="/programs-and-subjects/programs" style="color: white; text-decoration: none;"><button  class="btn btn-success w-100">Programs</button></a></td>
-          
-        </tr>
-      </tbody>
-    </table>
-  </div>
-    <div class="container">
-      
+          <div id="chart">
+            <apx-chart 
+            [series]="postsChartOptions.series" 
+            [chart]="postsChartOptions.chart"
+            [labels]="postsChartOptions.labels" 
+            [responsive]="postsChartOptions.responsive">
+          </apx-chart>
+          </div>
+
+
+        </div>
+      </div>
+
+      <!-- /.col -->
+
+
+      <div class="col-12 col-md-6 col-sm-3">
+        <div class="card bg-light ">
+
+          <div id="chart">
+            <apx-chart 
+            [series]="discussionsChartOptions.series" 
+            [chart]="discussionsChartOptions.chart"
+            [labels]="discussionsChartOptions.labels" 
+            [responsive]="discussionsChartOptions.responsive">
+          </apx-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
     </div>
-  
-  
-  
+<hr>
+    <!--Users-->
+    <div class="row" style="margin-top: 30px;">
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-white bg-info ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-users fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/users/registered-users" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white;font-size: larger;">
+                  <span> {{ countRegisteredUsers }} </span> <br>
+                  <span>Registered Users</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-center text-white bg-success ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-user-check fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/users/active-users" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white; font-size: larger;">
+                  <span> {{ countActiveUsers }} </span> <br>
+                  <span>Active <br> Users</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
 
 
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-center text-white bg-danger ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-users-slash fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/users/inactive-users" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white; font-size: larger;">
+                  <span> {{ countAllTheInActiveUsers }} </span> <br>
+                  <span>Inactive Users</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- /.col -->
+    </div>
+
+    <!--Posts-->
+    <div class="row" style="margin-top: 30px;">
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-white bg-info ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-mail-bulk fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/posts/all-posts" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white;font-size: larger;">
+                  <span> {{ countAllThePosts }} </span> <br>
+                  <span>Total <br> Posts</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-center text-white bg-success ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-plus-circle fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/posts/active-posts" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white; font-size: larger;">
+                  <span> {{ countAllTheActivePosts }} </span> <br>
+                  <span>Active <br> Posts</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-center text-white bg-danger ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-ban fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/posts/inactive-posts" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white; font-size: larger;">
+                  <span> {{ countAllTheInActivePosts }} </span> <br>
+                  <span>Inactive Posts</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+    </div>
+    <!--Discussions-->
+    <div class="row" style="margin-top: 30px;">
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-white bg-info ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-comments fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/discussions/all-discussions" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white;font-size: larger;">
+                  <span> {{ countAllTheDiscussion }} </span> <br>
+                  <span>Total Discussions</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-center text-white bg-success ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-comment fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/discussions/active-discussions" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white; font-size: larger;">
+                  <span> {{ countAllTheActiveDiscussion }} </span> <br>
+                  <span>Active <br> Discussions</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card text-center text-center text-white bg-danger ">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <i class="fas fa-comment-slash fa-6x"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a routerLink="/discussions/inactive-discussions" routerLinkActive="router-link-active"
+                  style="text-decoration: none; cursor: pointer; color: white; font-size: larger;">
+                  <span> {{ countAllTheInActiveDiscussion }} </span> <br>
+                  <span>Inactive Discussions</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.col -->
+    </div>
+
+   
+
+
+  </div>
+</div><br>
+<hr>

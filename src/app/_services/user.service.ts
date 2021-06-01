@@ -156,6 +156,13 @@ export class UserService implements OnInit {
     });
   }
 
+  updateNotes(noteId:number, file:FormData){
+    return this.http.put(environment.apiUrls + 'notes/updateNotes/' + noteId, file, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
   deleteNote(id):Observable<any>{
     return this.http.put(environment.apiUrls + 'notes/deletenotes/' + id, {responseType: 'json'});
   }
@@ -314,6 +321,32 @@ return this.http.get(uploadDir, {responseType: 'blob'});
     return this.http.delete(environment.apiUrls + 'profilePicture/deleteProfilePicture/' + userId, {responseType:'json'});
   }
  
+updatePost(id:number, content:any):Observable<any>{
+  return this.http.put(environment.apiUrls + 'posts/editpost/'+id, {content:content}, {responseType:'json'});
+}
 
+updateDiscussion(id:number, content:any):Observable<any>{
+  return this.http.put(environment.apiUrls + 'discussionforum/editdiscussion/'+id, {content:content}, {responseType:'json'});
+}
+
+
+getCommentById(id:number):Observable<any>{
+  return this.http.get(environment.apiUrls + 'comments/getCommentByCommentId/'+id, {responseType:'json'});
+}
+
+updateComment(id:number, postId:number, commentContent:any):Observable<any>{
+  return this.http.put(environment.apiUrls + 'comments/updatecomment/'+postId+"/comments/"+id,{comment:commentContent}, {responseType:'json'});
+}
+getReplayById(id:number):Observable<any>{
+  return this.http.get(environment.apiUrls + 'reply/getReplyById/'+id, {responseType:'json'});
+}
+
+updateReply(id:number, discussionId:number, replyContent:any):Observable<any>{
+  return this.http.put(environment.apiUrls + 'reply/updatereply/'+discussionId+"/reply/"+id, {reply:replyContent}, {responseType:'json'});
+}
+
+getDiscussionByDiscussionId(id:number):Observable<any>{
+  return this.http.get(environment.apiUrls + 'discussionforum/listdiscussionbyid/'+id,{responseType:'json'});
+}
 
 }

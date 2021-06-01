@@ -1,5 +1,17 @@
-<div class="container">
+<!-- <div class="container">
     <header class="jumbotron">
       <p>{{ content }}</p>
     </header>
   </div>
+   -->
+  <!-- <apx-chart [series]="series" [chart]="chart" [title]="title"></apx-chart> -->
+
+  <div id="chart">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [labels]="chartOptions.labels"
+      [responsive]="chartOptions.responsive"
+    ></apx-chart>
+  </div>
+  
